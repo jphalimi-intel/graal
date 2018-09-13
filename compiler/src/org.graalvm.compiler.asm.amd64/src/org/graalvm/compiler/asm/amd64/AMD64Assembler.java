@@ -1333,7 +1333,7 @@ public class AMD64Assembler extends AMD64BaseAssembler {
         }
     }
 
-    public static final class VexGeneralPurposeRVMOp extends VexOp {
+    public static final class VexGeneralPurposeRVMOp extends VexRVMOp {
         // @formatter:off
         public static final VexGeneralPurposeRVMOp ANDN   = new VexGeneralPurposeRVMOp("ANDN",   P_,   M_0F38, WIG, 0xF2, VEXOpAssertion.BMI1);
         public static final VexGeneralPurposeRVMOp MULX   = new VexGeneralPurposeRVMOp("MULX",   P_F2, M_0F38, WIG, 0xF6, VEXOpAssertion.BMI2);
@@ -1343,22 +1343,6 @@ public class AMD64Assembler extends AMD64BaseAssembler {
 
         private VexGeneralPurposeRVMOp(String opcode, int pp, int mmmmm, int w, int op, VEXOpAssertion assertion) {
             super(opcode, pp, mmmmm, w, op, assertion);
-        }
-
-        public void emit(AMD64Assembler asm, AVXSize size, Register dst, Register src1, Register src2) {
-            assert assertion.check((AMD64) asm.target.arch, LZ, dst, src1, src2, null);
-            assert size == AVXSize.DWORD || size == AVXSize.QWORD;
-            asm.vexPrefix(dst, src1, src2, size, pp, mmmmm, size == AVXSize.DWORD ? W0 : W1);
-            asm.emitByte(op);
-            asm.emitModRM(dst, src2);
-        }
-
-        public void emit(AMD64Assembler asm, AVXSize size, Register dst, Register src1, AMD64Address src2) {
-            assert assertion.check((AMD64) asm.target.arch, LZ, dst, src1, null, null);
-            assert size == AVXSize.DWORD || size == AVXSize.QWORD;
-            asm.vexPrefix(dst, src1, src2, size, pp, mmmmm, size == AVXSize.DWORD ? W0 : W1);
-            asm.emitByte(op);
-            asm.emitOperandHelper(dst, src2, 0);
         }
     }
 
@@ -1389,6 +1373,16 @@ public class AMD64Assembler extends AMD64BaseAssembler {
             asm.vexPrefix(dst, src2, src1, size, pp, mmmmm, size == AVXSize.DWORD ? W0 : W1);
             asm.emitByte(op);
             asm.emitOperandHelper(dst, src1, 0);
+        }
+    }
+
+    public static final class VexGeneralPurposeRMOp extends VexRMOp {
+        // @formatter:off
+        public static final VexGeneralPurposeRMOp BLSI  = new VexGeneralPurposeRMOp("BLSI",  P_,   M_0F38, WIG, 0xF3, VEXOpAssertion.BMI1);
+        // @formatter:on
+
+        private VexGeneralPurposeRMOp(String opcode, int pp, int mmmmm, int w, int op, VEXOpAssertion assertion) {
+            super(opcode, pp, mmmmm, w, op, assertion);
         }
     }
 

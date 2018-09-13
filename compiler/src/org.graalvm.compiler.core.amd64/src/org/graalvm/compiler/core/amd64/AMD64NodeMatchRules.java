@@ -272,6 +272,18 @@ public class AMD64NodeMatchRules extends NodeMatchRules {
         return getArithmeticLIRGenerator().emitLoad(to, address, state);
     }
 
+    @MatchRule("(And a (Not b))")
+    @MatchRule("(And (Not b) a)")
+    public ComplexMatchResult logicalAndNot(ValueNode a, ValueNode b) {
+        return builder -> getArithmeticLIRGenerator().emitLogicalAndNot(operand(a), operand(b));
+    }
+
+    @MatchRule("(And a (Negate a))")
+    @MatchRule("(And (Negate a) a)")
+    public ComplexMatchResult lowestSetIsolatedBit(ValueNode a) {
+        return builder -> getArithmeticLIRGenerator().emitLowestSetIsolatedBit(operand(a));
+    }
+
     @MatchRule("(If (IntegerTest Read=access value))")
     @MatchRule("(If (IntegerTest FloatingRead=access value))")
     public ComplexMatchResult integerTestBranchMemory(IfNode root, LIRLowerableAccess access, ValueNode value) {
