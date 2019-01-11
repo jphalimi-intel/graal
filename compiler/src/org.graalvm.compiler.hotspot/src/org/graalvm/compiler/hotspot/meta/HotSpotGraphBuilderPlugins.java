@@ -500,6 +500,7 @@ public class HotSpotGraphBuilderPlugins {
             assert config.sha256ImplCompress != 0L;
             Registration r = new Registration(plugins, "sun.security.provider.SHA2", bytecodeProvider);
             r.registerMethodSubstitution(SHA2Substitutions.class, SHA2Substitutions.implCompressName, "implCompress0", Receiver.class, byte[].class, int.class);
+            r.registerMethodSubstitution(SHA2Substitutions.class, SHA2Substitutions.implCompressMBName, "implCompressMB", Receiver.class, byte[].class, int.class, int.class);
         }
         if (config.useSHA512Intrinsics()) {
             assert config.sha512ImplCompress != 0L;

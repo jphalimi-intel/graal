@@ -250,6 +250,18 @@ public abstract class HotSpotBackend extends Backend implements FrameMap.Referen
     private static native void sha2ImplCompressStub(@ConstantNodeParameter ForeignCallDescriptor descriptor, Word bufAddr, Object state);
 
     /**
+     * @see SHA2Substitutions#implCompressMultiBlock0
+     */
+    public static final ForeignCallDescriptor SHA2_IMPL_COMPRESS_MB = new ForeignCallDescriptor("sha2ImplCompressMB", int.class, Word.class, Object.class, int.class, int.class);
+
+    public static int sha2ImplCompressMBStub(Word bufAddr, Object stateAddr, int ofs, int limit) {
+        return sha2ImplCompressMBStub(HotSpotBackend.SHA2_IMPL_COMPRESS_MB, bufAddr, stateAddr, ofs, limit);
+    }
+
+    @NodeIntrinsic(ForeignCallNode.class)
+    private static native int sha2ImplCompressMBStub(@ConstantNodeParameter ForeignCallDescriptor descriptor, Word bufAddr, Object state, int ofs, int limit);
+
+    /**
      * @see SHA5Substitutions#implCompress0
      */
     public static final ForeignCallDescriptor SHA5_IMPL_COMPRESS = new ForeignCallDescriptor("sha5ImplCompress", void.class, Word.class, Object.class);

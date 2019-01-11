@@ -47,6 +47,7 @@ import jdk.vm.ci.meta.JavaKind;
 public class SHA2Substitutions {
 
     public static final String implCompressName = Java8OrEarlier ? "implCompress" : "implCompress0";
+    public static final String implCompressMBName = Java8OrEarlier ? "implCompressMultiBlock" : "implCompressMultiBlock0";
 
     @MethodSubstitution(isStatic = false)
     static void implCompress0(Object receiver, byte[] buf, int ofs) {
@@ -55,6 +56,17 @@ public class SHA2Substitutions {
         Word bufAddr = WordFactory.unsigned(ComputeObjectAddressNode.get(buf, ReplacementsUtil.getArrayBaseOffset(INJECTED_METAACCESS, JavaKind.Byte) + ofs));
         Word stateAddr = WordFactory.unsigned(ComputeObjectAddressNode.get(state, ReplacementsUtil.getArrayBaseOffset(INJECTED_METAACCESS, JavaKind.Int)));
         HotSpotBackend.sha2ImplCompressStub(bufAddr, stateAddr);
+    }
+
+    @MethodSubstitution(isStatic = false)
+    static int implCompressMB(Object receiver, byte[] buf, int ofs, int limit) {
+        Object realReceiver = PiNode.piCastNonNull(receiver, HotSpotReplacementsUtil.methodHolderClass(INJECTED_INTRINSIC_CONTEXT));
+        Object state = RawLoadNode.load(realReceiver, stateOffset(INJECTED_INTRINSIC_CONTEXT), JavaKind.Object, LocationIdentity.any());
+
+        Word bufAddr = WordFactory.unsigned(ComputeObjectAddressNode.get(buf, ReplacementsUtil.getArrayBaseOffset(INJECTED_METAACCESS, JavaKind.Byte) + ofs));
+        Word stateAddr = WordFactory.unsigned(ComputeObjectAddressNode.get(state, ReplacementsUtil.getArrayBaseOffset(INJECTED_METAACCESS, JavaKind.Int)));
+
+        return HotSpotBackend.sha2ImplCompressMBStub(bufAddr, stateAddr, ofs, limit);
     }
 
     @Fold

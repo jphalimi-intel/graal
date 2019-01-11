@@ -54,6 +54,7 @@ import static org.graalvm.compiler.hotspot.HotSpotBackend.RESOLVE_KLASS_BY_SYMBO
 import static org.graalvm.compiler.hotspot.HotSpotBackend.RESOLVE_METHOD_BY_SYMBOL_AND_LOAD_COUNTERS;
 import static org.graalvm.compiler.hotspot.HotSpotBackend.RESOLVE_STRING_BY_SYMBOL;
 import static org.graalvm.compiler.hotspot.HotSpotBackend.SHA2_IMPL_COMPRESS;
+import static org.graalvm.compiler.hotspot.HotSpotBackend.SHA2_IMPL_COMPRESS_MB;
 import static org.graalvm.compiler.hotspot.HotSpotBackend.SHA5_IMPL_COMPRESS;
 import static org.graalvm.compiler.hotspot.HotSpotBackend.SHA_IMPL_COMPRESS;
 import static org.graalvm.compiler.hotspot.HotSpotBackend.GHASH_PROCESS_BLOCKS;
@@ -386,6 +387,7 @@ public abstract class HotSpotHostForeignCallsProvider extends HotSpotForeignCall
         }
         if (c.useSHA256Intrinsics()) {
             registerForeignCall(SHA2_IMPL_COMPRESS, c.sha256ImplCompress, NativeCall, DESTROYS_REGISTERS, LEAF_NOFP, REEXECUTABLE_ONLY_AFTER_EXCEPTION, NamedLocationIdentity.any());
+            registerForeignCall(SHA2_IMPL_COMPRESS_MB, c.sha256ImplCompressMB, NativeCall, DESTROYS_REGISTERS, LEAF_NOFP, REEXECUTABLE_ONLY_AFTER_EXCEPTION, NamedLocationIdentity.any());
         }
         if (c.useSHA512Intrinsics()) {
             registerForeignCall(SHA5_IMPL_COMPRESS, c.sha512ImplCompress, NativeCall, DESTROYS_REGISTERS, LEAF_NOFP, REEXECUTABLE_ONLY_AFTER_EXCEPTION, NamedLocationIdentity.any());

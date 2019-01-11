@@ -119,7 +119,7 @@ public class GraalHotSpotVMConfig extends GraalHotSpotVMConfigBase {
     }
 
     public boolean useSHA256Intrinsics() {
-        return useSHA256Intrinsics && sha256ImplCompress != 0;
+        return useSHA256Intrinsics && sha256ImplCompress != 0 && sha256ImplCompressMB != 0;
     }
 
     public boolean useSHA512Intrinsics() {
